@@ -1,0 +1,3170 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Sonik — Header</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --container-max: 1280px;
+        --container-pad: 24px;
+
+        --text: rgba(255, 255, 255, 0.92);
+        --accent: #0aa7f8;
+        /* мягкая градиентная «обводка» рамки фото (сверху акцент → к низу светлее) */
+        --photo-frame-border: 2px;
+        --photo-frame-grad: linear-gradient(
+          180deg,
+          rgba(10, 167, 248, 0.42) 0%,
+          rgba(255, 255, 255, 0.38) 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scrollbar-gutter: stable;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font: 400 16px/1.4 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: linear-gradient(180deg, #bfdbfe 0%, #7dd3fc 35%, #38bdf8 70%, #0284c7 100%);
+        background-attachment: fixed;
+      }
+
+      /* Frutiger Aero: бесконечное голубое небо с облаками (CSS) + летающие пузыри */
+      .aero-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .aero-bg__sky {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: linear-gradient(
+          185deg,
+          #e0f2fe 0%,
+          #93c5fd 22%,
+          #60a5fa 48%,
+          #38bdf8 78%,
+          #0369a1 100%
+        );
+      }
+
+      .aero-bg__sky::before {
+        content: "";
+        position: absolute;
+        inset: -8% -5%;
+        background:
+          radial-gradient(ellipse 120% 60% at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 52%),
+          radial-gradient(ellipse 52% 28% at 8% 22%, rgba(255, 255, 255, 0.45) 0%, transparent 58%),
+          radial-gradient(ellipse 40% 22% at 28% 18%, rgba(255, 255, 255, 0.38) 0%, transparent 56%),
+          radial-gradient(ellipse 48% 26% at 52% 20%, rgba(255, 255, 255, 0.42) 0%, transparent 58%),
+          radial-gradient(ellipse 44% 24% at 76% 16%, rgba(255, 255, 255, 0.4) 0%, transparent 56%),
+          radial-gradient(ellipse 50% 28% at 94% 24%, rgba(255, 255, 255, 0.36) 0%, transparent 58%),
+          radial-gradient(ellipse 72% 34% at 18% 52%, rgba(255, 255, 255, 0.22) 0%, transparent 64%),
+          radial-gradient(ellipse 68% 32% at 82% 56%, rgba(255, 255, 255, 0.2) 0%, transparent 62%),
+          radial-gradient(ellipse 95% 38% at 48% 82%, rgba(255, 255, 255, 0.14) 0%, transparent 68%);
+        animation: aero-sky-cloud-drift 85s ease-in-out infinite alternate;
+        will-change: transform;
+      }
+
+      .aero-bg__sky::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 28% 16% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
+          radial-gradient(circle at 50% -5%, rgba(255, 255, 255, 0.28) 0%, transparent 38%);
+        opacity: 0.85;
+        animation: aero-sky-cloud-drift2 110s ease-in-out infinite alternate-reverse;
+        will-change: transform;
+      }
+
+      @keyframes aero-sky-cloud-drift {
+        from {
+          transform: translate3d(-2.5%, 0, 0) scale(1.03);
+        }
+        to {
+          transform: translate3d(2.5%, 0, 0) scale(1.03);
+        }
+      }
+
+      @keyframes aero-sky-cloud-drift2 {
+        from {
+          transform: translate3d(1.5%, -0.8%, 0);
+        }
+        to {
+          transform: translate3d(-1.5%, 0.6%, 0);
+        }
+      }
+
+      .aero-bg__bubbles {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .aero-bubble {
+        position: absolute;
+        left: var(--x, 50%);
+        bottom: var(--b, -12%);
+        width: calc(var(--w, 40px) * 2);
+        height: calc(var(--w, 40px) * 2);
+        border-radius: 50%;
+        opacity: 0;
+        --op: 0.78;
+        background:
+          radial-gradient(
+            circle at 32% 28%,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(255, 255, 255, 0.35) 18%,
+            rgba(125, 211, 252, 0.25) 42%,
+            rgba(14, 165, 233, 0.12) 100%
+          );
+        box-shadow:
+          inset -12px -20px 36px rgba(255, 255, 255, 0.55),
+          inset 10px 16px 32px rgba(3, 105, 161, 0.22),
+          0 12px 56px rgba(14, 165, 233, 0.35),
+          0 0 2px rgba(255, 255, 255, 0.85);
+        animation: aero-bubble-rise var(--dur, 24s) linear infinite;
+        animation-delay: var(--delay, 0s);
+        will-change: transform, opacity;
+      }
+
+      @keyframes aero-bubble-rise {
+        0% {
+          transform: translate3d(0, 0, 0) scale(0.75);
+          opacity: 0;
+        }
+        6% {
+          opacity: var(--op);
+        }
+        92% {
+          opacity: calc(var(--op) * 0.85);
+        }
+        100% {
+          transform: translate3d(var(--dx, 0px), calc(-100vh - 360px), 0) scale(1.08);
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .aero-bg__bubbles {
+          display: none;
+        }
+
+        .aero-bg__sky::before,
+        .aero-bg__sky::after {
+          animation: none;
+        }
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        min-height: 100%;
+        padding: 56px 0 96px;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: min(var(--container-max), calc(100% - var(--container-pad) * 2));
+        margin: 0 auto;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
+
+      .header {
+        height: 81px;
+        padding: 16px 24px;
+        border-radius: 40px;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(101, 177, 225, 0.6) 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 1) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          9px 4px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .brand {
+        width: 235px;
+        height: 49px;
+        position: relative;
+        overflow: hidden;
+        flex: 0 0 auto;
+        display: block;
+      }
+
+      .brand__full {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+      }
+
+      .header__actions {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 16px;
+      }
+
+      .search {
+        width: 397px;
+        height: 100%;
+        padding: 16px 8px 16px 16px;
+        border-radius: 40px;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px var(--accent) inset,
+          0px 0px 0.25px 1.25px var(--accent) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid rgba(255, 255, 255, 1);
+        outline-offset: -1px;
+      }
+
+      .search__icon {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        opacity: 0.95;
+        filter: drop-shadow(0 1px 0 rgba(12, 56, 84, 0.25));
+      }
+
+      .search__hint {
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.25);
+        user-select: none;
+      }
+
+      .iconBtn {
+        height: 100%;
+        padding: 16px;
+        border-radius: 74px;
+        overflow: hidden;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.8) 0%,
+          rgba(101, 177, 225, 0.8) 83%,
+          rgba(255, 255, 255, 0.38) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px var(--accent) inset,
+          0px 0px 0.25px 1.25px var(--accent) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid var(--accent);
+        outline-offset: -1px;
+
+        border: 0;
+        cursor: pointer;
+      }
+
+      a.iconBtn {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .iconBtn img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
+      .user-card,
+      .idol-card,
+      .subscription-card,
+      .beta-card {
+        cursor: pointer;
+      }
+
+      @media (max-width: 900px) {
+        .brand {
+          width: 180px;
+        }
+        .search {
+          width: 260px;
+        }
+      }
+
+      .section {
+        width: 100%;
+        padding: 24px 24px 48px;
+        position: relative;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(8.1, 149.72, 240.66, 0.54) 31%,
+          rgba(36.12, 138.35, 203.99, 0.56) 53%,
+          rgba(82.42, 174.82, 234.15, 0.58) 75%,
+          rgba(101.49, 176.58, 224.8, 0.6) 86%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          0px 6px 8px rgba(12, 56, 84, 0.14);
+      }
+
+      .section__title {
+        margin: 0;
+        width: 326px;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .carousel {
+        position: relative;
+        padding: 0;
+        border-radius: 40px;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .carousel__viewport {
+        overflow: hidden;
+        border-radius: 40px;
+        background: transparent;
+      }
+
+      .carousel__track {
+        display: flex;
+        align-items: stretch;
+        gap: 28px;
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+      }
+
+      .slide {
+        width: 100%;
+        flex: 0 0 100%;
+      }
+
+      .card {
+        height: 554px;
+        padding: 18px;
+        position: relative;
+        border-radius: 40px;
+        overflow: hidden;
+        outline: 0.5px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: transparent;
+        box-shadow: 0px 4px 4px rgba(12, 56, 84, 0.25);
+      }
+
+      .card__media {
+        flex: 1 1 auto;
+        border-radius: 25px;
+        overflow: hidden;
+        opacity: 1;
+      }
+
+      .card__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .card__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .card__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .card__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .card__desc {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .stats {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .stat {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        font-weight: 600;
+      }
+
+      .stat__icon {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        opacity: 0.95;
+        filter: drop-shadow(0 1px 0 rgba(12, 56, 84, 0.25));
+      }
+
+      .tagbar {
+        position: absolute;
+        right: 26px;
+        top: 26px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .rating {
+        padding: 2px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        font-weight: 600;
+        line-height: 20px;
+      }
+
+      .tag {
+        padding: 10px;
+        border-radius: 20px;
+        background: #5fb8f1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .carousel__nav {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      .carousel__btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 74px;
+        outline: 1px solid var(--accent);
+        outline-offset: -1px;
+        border: 0;
+        cursor: pointer;
+        pointer-events: auto;
+        background: linear-gradient(180deg, #ffffff 0%, #65b1e1 55%, #d8eef9 100%);
+        box-shadow:
+          3px 5px 2px -4.75px var(--accent) inset,
+          0px 0px 0.25px 1.25px var(--accent) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .carousel__btn img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
+      .dots {
+        position: absolute;
+        left: 50%;
+        bottom: 14px;
+        transform: translateX(-50%);
+        display: inline-flex;
+        gap: 16px;
+      }
+
+      .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .dot.is-active {
+        background: rgba(255, 255, 255, 1);
+      }
+
+      .users-section {
+        width: 100%;
+        padding: 24px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .users-section__head {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 24px;
+      }
+
+      .users-section__title {
+        flex: 1 1 0;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .users-more {
+        width: 60px;
+        height: 60px;
+        padding: 16px 8px;
+        border-radius: 74px;
+        border: 0;
+        cursor: pointer;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #ffffff 0%, #65b1e1 55%, #d8eef9 100%);
+        box-shadow:
+          3px 5px 2px -4.75px var(--accent) inset,
+          0px 0px 0.25px 1.25px var(--accent) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid var(--accent);
+        outline-offset: -1px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .users-more img {
+        width: 24px;
+        height: 20px;
+        object-fit: contain;
+      }
+
+      .users-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .user-card {
+        height: 430px;
+        min-height: 430px;
+        max-height: 430px;
+        padding: 18px;
+        border-radius: 40px;
+        overflow: hidden;
+        outline: 0.5px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: transparent;
+        box-shadow:
+          0px 4px 4px rgba(255, 255, 255, 0.25) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+      }
+
+      .user-card__media {
+        flex: 1 1 auto;
+        min-height: 0;
+        border-radius: 25px;
+        overflow: hidden;
+        opacity: 1;
+      }
+
+      .user-card__media img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+        display: block;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .user-card__body {
+        flex: 0 0 auto;
+      }
+
+      .user-card__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.15;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+      }
+
+      .user-card__genre {
+        margin: 0;
+        flex: 1 1 0;
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+
+      .user-card__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .user-card__stats {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+      }
+
+      .idols-section {
+        width: 100%;
+        padding: 24px;
+        border-radius: 40px;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .idols-block {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .idols-head {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .idols-head__title {
+        flex: 1 1 0;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .idols-row {
+        align-self: stretch;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: flex-start;
+      }
+
+      .idol-card {
+        width: 292px;
+        max-width: 100%;
+        min-height: 369px;
+        padding: 18px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: transparent;
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.4) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .idol-card__media {
+        flex: 1 1 auto;
+        min-height: 160px;
+        border-radius: 25px;
+        overflow: hidden;
+        border: var(--photo-frame-border) solid transparent;
+        background:
+          linear-gradient(transparent, transparent) padding-box,
+          var(--photo-frame-grad) border-box;
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+      }
+
+      .idol-card__media img {
+        width: 100%;
+        height: 100%;
+        min-height: 200px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        opacity: 1;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+        transform: scale(1.06);
+        transform-origin: center center;
+      }
+
+      .idol-card--bright .idol-card__media img {
+        opacity: 1;
+      }
+
+      .idol-card__foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        gap: 4px;
+      }
+
+      .idol-card__text {
+        flex: 1 1 0;
+        min-height: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .idol-card__name {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 18px;
+      }
+
+      .idol-card__role {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .idol-card__likes {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        height: 24px;
+        flex-shrink: 0;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .idol-card__likes .stat__icon {
+        width: 22px;
+        height: 22px;
+      }
+
+      .legends-block {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        align-self: stretch;
+      }
+
+      .legends-block__title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .legends-block__lede {
+        margin: 0;
+        max-width: 908px;
+        font-size: 18px;
+        font-weight: 500;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .legends-visual {
+        position: relative;
+        align-self: stretch;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: flex-start;
+        gap: clamp(12px, 2.5vw, 28px);
+        min-height: 0;
+        padding-bottom: 0;
+      }
+
+      .legends-hero {
+        position: relative;
+        z-index: 2;
+        flex: 0 1 auto;
+        width: min(540px, 46vw);
+        max-width: 100%;
+        margin-left: clamp(-32px, -3vw, -8px);
+        margin-bottom: 0;
+        align-self: flex-end;
+        pointer-events: none;
+      }
+
+      .legends-hero img {
+        width: 100%;
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        object-position: left bottom;
+        border-radius: 0;
+        border: 0;
+        display: block;
+        opacity: 1;
+        filter: drop-shadow(0 10px 28px rgba(12, 56, 84, 0.22));
+      }
+
+      .legends-cards {
+        position: relative;
+        z-index: 1;
+        flex: 1 1 280px;
+        min-width: min(100%, 260px);
+        align-self: flex-end;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: clamp(14px, 2vw, 20px);
+      }
+
+      @media (max-width: 960px) {
+        .legends-visual {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          min-height: 0;
+          gap: 20px;
+        }
+
+        .legends-hero {
+          flex: 1 1 auto;
+          width: 100%;
+          max-width: min(100%, 440px);
+          margin-left: clamp(-12px, -2vw, 0px);
+          order: 1;
+          pointer-events: auto;
+        }
+
+        .legends-cards {
+          flex: 1 1 100%;
+          order: 2;
+          justify-content: center;
+        }
+
+      }
+
+      .legend-card {
+        /* совпадает с шириной/высотой .legend-quad (квадрат 2×2) */
+        --legend-quad-w: min(100%, 308px);
+        --legend-quad-h: var(--legend-quad-w);
+        width: min(100%, 292px);
+        max-width: 100%;
+        flex: 0 0 auto;
+        height: var(--legend-quad-h);
+        max-height: var(--legend-quad-h);
+        padding: 18px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: transparent;
+        border: 0;
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.4) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .legend-card__media {
+        flex: 1 1 auto;
+        min-height: 0;
+        border-radius: 25px;
+        overflow: hidden;
+        border: var(--photo-frame-border) solid transparent;
+        background:
+          linear-gradient(transparent, transparent) padding-box,
+          var(--photo-frame-grad) border-box;
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+      }
+
+      .legend-card__media img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        opacity: 1;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+        transform: scale(1.06);
+        transform-origin: center center;
+      }
+
+      .legend-card .idol-card__foot {
+        margin-top: auto;
+      }
+
+      .legend-quad {
+        flex: 0 0 auto;
+        width: min(100%, 308px);
+        aspect-ratio: 1;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: clamp(14px, 2vw, 20px);
+        align-self: stretch;
+      }
+
+      .legend-thumb {
+        width: 100%;
+        min-width: 0;
+        aspect-ratio: 1;
+        min-height: 0;
+        border-radius: 25px;
+        overflow: hidden;
+        border: var(--photo-frame-border) solid transparent;
+        background:
+          linear-gradient(transparent, transparent) padding-box,
+          var(--photo-frame-grad) border-box;
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+        box-shadow: 0px 4px 4px rgba(12, 56, 84, 0.12);
+      }
+
+      .legend-thumb img {
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        opacity: 1;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+        transform: scale(1.06);
+        transform-origin: center center;
+      }
+
+      .subscription-section {
+        width: 100%;
+        padding: 24px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .subscription-head {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .subscription-brandline {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .subscription-brandline__text {
+        margin: 0;
+        white-space: nowrap;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .subscription-brandline__logo {
+        width: 238px;
+        height: 29px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .subscription-button {
+        align-self: stretch;
+        padding: 16px 12px 16px 16px;
+        border-radius: 40px;
+        border: 0;
+        cursor: pointer;
+        color: white;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid white;
+        outline-offset: -1px;
+      }
+
+      .subscription-lede {
+        margin: 0;
+        max-width: 980px;
+        font-size: 18px;
+        font-weight: 500;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .subscription-card {
+        position: relative;
+        padding: 18px;
+        border-radius: 40px;
+        overflow: hidden;
+        outline: 0.5px solid #0aa7f8;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%);
+        box-shadow:
+          0px 4px 4px rgba(255, 255, 255, 0.25) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+      }
+
+      .subscription-card__media {
+        width: 100%;
+        height: 311px;
+        border-radius: 25px;
+        object-fit: cover;
+        opacity: 0.8;
+      }
+
+      .subscription-card__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .subscription-card__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .subscription-card__genre {
+        margin: 0;
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .subscription-tags {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .beta-section {
+        width: 100%;
+        padding: 24px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .beta-intro {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .beta-head {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .beta-head__title {
+        flex: 1 1 0;
+        margin: 0;
+        font-family: "Red Rose", serif;
+        font-size: 28px;
+        font-weight: 400;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .beta-button {
+        align-self: stretch;
+        padding: 16px 8px 16px 16px;
+        border-radius: 40px;
+        border: 0;
+        cursor: pointer;
+        color: white;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid white;
+        outline-offset: -1px;
+      }
+
+      .beta-lede {
+        margin: 0;
+        max-width: 980px;
+        font-size: 18px;
+        font-weight: 500;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .beta-grid {
+        display: grid;
+        grid-template-columns: 393px repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .beta-card {
+        min-height: 369px;
+        padding: 18px;
+        border-radius: 40px;
+        overflow: hidden;
+        outline: 0.5px solid #0aa7f8;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%);
+        box-shadow:
+          0px 4px 4px rgba(255, 255, 255, 0.25) inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+      }
+
+      .beta-card__media {
+        width: 100%;
+        height: 261px;
+        border-radius: 25px;
+        object-fit: cover;
+        opacity: 0.8;
+      }
+
+      .beta-card__title {
+        margin: 0;
+        min-height: 36px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .beta-card__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .beta-card__risk {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .beta-card__stats {
+        flex: 1 1 auto;
+        justify-content: flex-end;
+      }
+
+      /* оформление подписки — фон секции как у beta-section */
+      .subpay-section {
+        width: 100%;
+        padding: 24px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .subpay {
+        box-sizing: border-box;
+        align-self: stretch;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        box-shadow: none;
+        overflow: visible;
+        border-radius: 0;
+        isolation: auto;
+        background: transparent;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .subpay__head {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .subpay__title-row {
+        align-self: stretch;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .subpay__title {
+        margin: 0;
+        color: #fff;
+        font-size: 28px;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        line-height: 1.2;
+        word-wrap: break-word;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .subpay__badge {
+        width: 185px;
+        height: 22px;
+        object-fit: contain;
+        object-position: left center;
+        display: block;
+      }
+
+      .subpay__stack {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 32px;
+      }
+
+      .subpay__fields {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .subpay__field {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .subpay__label {
+        margin: 0;
+        color: #fff;
+        font-size: 18px;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        word-wrap: break-word;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .subpay__glass {
+        box-sizing: border-box;
+        height: 49px;
+        padding: 16px 8px 16px 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(101, 177, 225, 0.2) 83%,
+          rgba(255, 255, 255, 0.11) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        overflow: hidden;
+        border-radius: 40px;
+        outline: 1px #fff solid;
+        outline-offset: -1px;
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .subpay__glass--wide {
+        width: 397px;
+        max-width: 100%;
+      }
+
+      .subpay__glass--grow {
+        align-self: stretch;
+        width: auto;
+      }
+
+      .subpay__glass-text {
+        margin: 0;
+        opacity: 0.7;
+        color: #fff;
+        font-size: 16px;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        word-wrap: break-word;
+      }
+
+      .subpay__row {
+        width: 397px;
+        max-width: 100%;
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .subpay__col {
+        flex: 1 1 0;
+        min-width: 0;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .subpay__submit {
+        box-sizing: border-box;
+        width: 397px;
+        max-width: 100%;
+        height: 53px;
+        padding: 16px 8px 16px 16px;
+        border: 0;
+        border-radius: 40px;
+        cursor: pointer;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        overflow: hidden;
+        outline: 1px #fff solid;
+        outline-offset: -1px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        font-size: 16px;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        word-wrap: break-word;
+      }
+
+      .subpay__submit:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      .sonik-card-dialog {
+        padding: 0;
+        border: none;
+        background: transparent;
+        max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+      }
+
+      .sonik-card-dialog::backdrop {
+        background: rgba(12, 56, 84, 0.5);
+        backdrop-filter: blur(6px);
+      }
+
+      .sonik-card-dialog__panel {
+        position: relative;
+        padding: 20px 20px 24px;
+        border-radius: 40px;
+        max-width: min(840px, 100vw - 32px);
+        max-height: min(88vh, 900px);
+        overflow: auto;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.55) 0%,
+          rgba(36, 138, 204, 0.5) 45%,
+          rgba(82, 175, 234, 0.52) 78%,
+          rgba(255, 255, 255, 0.42) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.85) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.22) inset,
+          0 24px 48px rgba(12, 56, 84, 0.35);
+      }
+
+      .sonik-card-dialog__close {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        float: right;
+        margin: 0 0 8px 8px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 0;
+        cursor: pointer;
+        font-size: 22px;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.95);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(101, 177, 225, 0.65) 100%);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+          0 4px 12px rgba(12, 56, 84, 0.25);
+      }
+
+      .sonik-card-dialog__body {
+        clear: both;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+
+      .sonik-card-dialog__session-row {
+        flex-shrink: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .sonik-card-dialog__session-btn {
+        box-sizing: border-box;
+        width: min(397px, 100%);
+        padding: 16px 24px;
+        border-radius: 40px;
+        border: 0;
+        cursor: pointer;
+        color: #fff;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px solid #fff;
+        outline-offset: -1px;
+      }
+
+      .sonik-card-dialog__session-btn:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      .sonik-card-dialog__clone-wrap {
+        pointer-events: none;
+      }
+
+      .sonik-card-dialog__clone-wrap .subscription-tags {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .sonik-card-dialog__clone-wrap .user-card,
+      .sonik-card-dialog__clone-wrap .idol-card,
+      .sonik-card-dialog__clone-wrap .legend-card,
+      .sonik-card-dialog__clone-wrap .subscription-card,
+      .sonik-card-dialog__clone-wrap .beta-card {
+        max-width: 100%;
+        min-height: 0;
+        height: auto;
+      }
+
+      .sonik-card-dialog__clone-wrap .user-card__media,
+      .sonik-card-dialog__clone-wrap .idol-card__media,
+      .sonik-card-dialog__clone-wrap .legend-card__media,
+      .sonik-card-dialog__clone-wrap .subscription-card__media,
+      .sonik-card-dialog__clone-wrap .beta-card__media {
+        max-height: 280px;
+      }
+
+      /* модальная регистрация: чуть шире, без внутреннего скролла */
+      #sonik-register-dialog.sonik-card-dialog {
+        max-height: none;
+        overflow: visible;
+      }
+
+      #sonik-register-dialog .sonik-card-dialog__panel {
+        box-sizing: border-box;
+        position: relative;
+        padding: 24px;
+        margin: 0;
+        /* чуть уже основного контейнера */
+        width: min(calc(var(--container-max) - 64px), calc(100vw - var(--container-pad) * 2 - 64px));
+        max-width: min(calc(var(--container-max) - 64px), calc(100vw - var(--container-pad) * 2 - 64px));
+        max-height: none;
+        border-radius: 40px;
+        overflow: visible;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          inset 6px 8px 12px rgba(12, 56, 84, 0.12);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+      }
+
+      #sonik-register-dialog .sonik-reg {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 24px;
+      }
+
+      #sonik-register-dialog .sonik-reg__head {
+        align-self: stretch;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      #sonik-register-dialog .sonik-reg__title {
+        flex: 1 1 0;
+        min-width: 0;
+        margin: 0;
+        color: #fff;
+        font-size: 28px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        line-height: 1.2;
+        word-wrap: break-word;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      #sonik-register-dialog .sonik-reg__close {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        width: 49px;
+        height: 49px;
+        padding: 0;
+        border: 0;
+        border-radius: 74px;
+        cursor: pointer;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.8) 0%,
+          rgba(101, 177, 225, 0.8) 83%,
+          rgba(255, 255, 255, 0.38) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px #0aa7f8 solid;
+        outline-offset: -1px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #sonik-register-dialog .sonik-reg__close::before,
+      #sonik-register-dialog .sonik-reg__close::after {
+        content: "";
+        position: absolute;
+        width: 19px;
+        height: 2px;
+        background: #fff;
+        border-radius: 1px;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+      }
+
+      #sonik-register-dialog .sonik-reg__close::before {
+        transform: rotate(45deg);
+      }
+
+      #sonik-register-dialog .sonik-reg__close::after {
+        transform: rotate(-45deg);
+      }
+
+      #sonik-register-dialog .sonik-reg__close:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      #sonik-register-dialog .sonik-reg__block {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+
+      #sonik-register-dialog .sonik-reg__error {
+        margin: 0;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        color: #fecaca;
+        text-shadow: 0 1px 2px rgba(12, 56, 84, 0.4);
+      }
+
+      #sonik-register-dialog .sonik-reg__form {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin: 0;
+      }
+
+      #sonik-register-dialog .sonik-reg__fields {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-self: stretch;
+      }
+
+      #sonik-register-dialog .sonik-reg__field {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      #sonik-register-dialog .sonik-reg__label {
+        margin: 0;
+        color: #fff;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        word-wrap: break-word;
+      }
+
+      #sonik-register-dialog .sonik-reg__input-wrap {
+        align-self: stretch;
+        height: 49px;
+        padding: 16px 8px 16px 16px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(101, 177, 225, 0.2) 83%,
+          rgba(255, 255, 255, 0.11) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px #fff solid;
+        outline-offset: -1px;
+      }
+
+      #sonik-register-dialog .sonik-reg__input-wrap input {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        outline: none;
+      }
+
+      #sonik-register-dialog .sonik-reg__input-wrap input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        opacity: 1;
+      }
+
+      #sonik-register-dialog .sonik-reg__submit {
+        align-self: stretch;
+        height: 53px;
+        padding: 16px 8px 16px 16px;
+        border: 0;
+        border-radius: 40px;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        overflow: hidden;
+        outline: 1px #fff solid;
+        outline-offset: -1px;
+        color: #fff;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        word-wrap: break-word;
+      }
+
+      #sonik-register-dialog .sonik-reg__submit:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      #sonik-register-dialog .sonik-reg__footer {
+        margin: 0;
+        font-size: 18px;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        color: #fff;
+        word-wrap: break-word;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      #sonik-register-dialog .sonik-reg__footer a {
+        color: #fff;
+        font-family: "Reddit Sans", "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      #sonik-register-dialog .sonik-reg__footer a:hover {
+        opacity: 0.92;
+      }
+
+      @media (max-width: 1120px) {
+        .beta-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .subscription-tags {
+          left: 25px;
+          right: 25px;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .subscription-head {
+          flex-wrap: wrap;
+        }
+
+        .subscription-brandline {
+          flex-wrap: wrap;
+        }
+
+        .subscription-brandline__text {
+          white-space: normal;
+        }
+
+        .subscription-button {
+          align-self: flex-start;
+        }
+
+        .subscription-card__media {
+          height: 240px;
+        }
+
+        .subscription-card__row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .beta-head {
+          flex-wrap: wrap;
+        }
+
+        .beta-button {
+          align-self: flex-start;
+        }
+
+        .beta-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .subpay__title-row {
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .legend-card {
+          --legend-quad-w: min(100%, 300px);
+          width: min(100%, 292px);
+        }
+
+        .legend-quad {
+          width: min(100%, 300px);
+        }
+
+        .legend-card__media {
+          min-height: 0;
+        }
+      }
+
+      @media (max-width: 1000px) {
+        .users-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        .users-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 24px 0 48px;
+        }
+        .brand {
+          width: 48px;
+        }
+        .search {
+          display: none;
+        }
+
+        .section {
+          padding: 18px;
+        }
+
+        .section__title {
+          width: auto;
+          font-size: 22px;
+        }
+
+        .users-section {
+          padding: 18px;
+        }
+
+        .users-section__title {
+          font-size: 22px;
+        }
+
+        .idols-section {
+          padding: 18px;
+        }
+
+        .subscription-section {
+          padding: 18px;
+        }
+
+        .beta-section {
+          padding: 18px;
+        }
+
+        .subpay-section {
+          padding: 18px;
+        }
+
+        .subpay {
+          max-width: none;
+        }
+
+        .subscription-brandline__text {
+          font-size: 22px;
+        }
+
+        .subscription-lede {
+          font-size: 16px;
+        }
+
+        .beta-head__title {
+          font-size: 22px;
+        }
+
+        .beta-lede {
+          font-size: 16px;
+        }
+
+        .subpay__title {
+          font-size: 22px;
+        }
+
+        .idols-head__title,
+        .legends-block__title {
+          font-size: 22px;
+        }
+
+        .legends-block__lede {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <audio
+      id="sonikAmbientBg"
+      loop
+      preload="metadata"
+      playsinline
+      hidden
+    >
+      <source src="./assets/sonik-ambient.mp3" type="audio/mpeg" />
+    </audio>
+    <script>
+      (() => {
+        const el = document.getElementById("sonikAmbientBg");
+        if (!el) return;
+        el.volume = 0.2;
+        let started = false;
+        const play = () => {
+          if (started) return;
+          el.play().then(() => (started = true)).catch(() => {});
+        };
+        document.addEventListener("click", play, { once: true, passive: true });
+        document.addEventListener("keydown", play, { once: true, passive: true });
+        document.addEventListener("touchstart", play, { once: true, passive: true });
+      })();
+    </script>
+    <div class="aero-bg" aria-hidden="true">
+      <div class="aero-bg__sky"></div>
+      <ul class="aero-bg__bubbles">
+        <li
+          class="aero-bubble"
+          style="--x: 8%; --w: 52px; --dur: 26s; --delay: -3s; --dx: 35px; --b: -8%"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 18%; --w: 28px; --dur: 19s; --delay: -12s; --dx: -22px; --op: 0.65"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 26%; --w: 72px; --dur: 32s; --delay: -1s; --dx: 48px; --b: -15%"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 38%; --w: 36px; --dur: 21s; --delay: -8s; --dx: -40px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 44%; --w: 96px; --dur: 38s; --delay: -18s; --dx: 18px; --op: 0.55"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 55%; --w: 44px; --dur: 23s; --delay: -5s; --dx: 55px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 62%; --w: 22px; --dur: 16s; --delay: -14s; --dx: -15px; --op: 0.6"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 71%; --w: 64px; --dur: 29s; --delay: -22s; --dx: -52px; --b: -10%"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 78%; --w: 34px; --dur: 20s; --delay: -7s; --dx: 28px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 88%; --w: 58px; --dur: 27s; --delay: -11s; --dx: -30px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 95%; --w: 40px; --dur: 24s; --delay: -16s; --dx: 42px; --op: 0.68"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 12%; --w: 18px; --dur: 14s; --delay: -9s; --dx: 20px; --op: 0.5"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 33%; --w: 24px; --dur: 17s; --delay: -20s; --dx: -25px; --op: 0.52"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 48%; --w: 80px; --dur: 35s; --delay: -4s; --dx: 62px; --op: 0.48"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 66%; --w: 30px; --dur: 18s; --delay: -13s; --dx: 12px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 82%; --w: 46px; --dur: 25s; --delay: -25s; --dx: -38px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 3%; --w: 56px; --dur: 31s; --delay: -6s; --dx: 45px; --b: -18%"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 92%; --w: 32px; --dur: 22s; --delay: -2s; --dx: -48px"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 22%; --w: 14px; --dur: 12s; --delay: -17s; --dx: 8px; --op: 0.45"
+        ></li>
+        <li
+          class="aero-bubble"
+          style="--x: 58%; --w: 20px; --dur: 15s; --delay: -21s; --dx: -10px; --op: 0.48"
+        ></li>
+      </ul>
+    </div>
+    <main class="page">
+      <div class="container">
+        <div class="stack">
+          <header class="header">
+            <a class="brand" href="#" aria-label="Sonik — главная">
+              <img class="brand__full" src="./logo-sonik-3000.png" alt="Sonik 3000" />
+            </a>
+
+            <div class="header__actions">
+              <div class="search" role="search" aria-label="Поиск">
+                <img class="search__icon" src="./icon-search.png" alt="" aria-hidden="true" />
+                <div class="search__hint">Найти что угодно</div>
+              </div>
+
+              <a
+                class="iconBtn"
+                href="./register.html?return=index.html"
+                data-sonik-profile
+                aria-label="Регистрация"
+              >
+                <img src="./icon-personal.png" alt="" aria-hidden="true" />
+              </a>
+            </div>
+          </header>
+
+          <section class="section" aria-label="Новые сеансы снов">
+            <h2 class="section__title">Новые сеансы снов</h2>
+
+            <div class="carousel" data-carousel="new">
+              <div class="carousel__viewport" data-carousel-viewport>
+                <div class="carousel__track" data-carousel-track>
+                  <article class="slide" data-slide="0">
+                    <div class="card">
+                      <div class="card__media">
+                        <img src="./cover-ocean.png" alt="" />
+                      </div>
+
+                      <div class="card__meta">
+                        <h3 class="card__title">Переправа через Тихий океан на порванном матрасе</h3>
+
+                        <div class="card__row">
+                          <div class="card__desc">экстримальный триллер POV-формата со скримерами</div>
+                          <div class="stats" aria-label="Статистика">
+                            <div class="stat" title="Просмотры">
+                              <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                              <span>10k</span>
+                            </div>
+                            <div class="stat" title="Лайки">
+                              <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                              <span>4k</span>
+                            </div>
+                            <span class="rating" title="Возрастной рейтинг">16+</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tagbar" aria-label="Теги">
+                        <div class="tag">Вы – главный герой</div>
+                        <div class="tag">Уникальный опыт</div>
+                        <div class="tag">Без рекламы</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="slide" data-slide="1">
+                    <div class="card">
+                      <div class="card__media">
+                        <img src="./cover-dance.png" alt="" />
+                      </div>
+
+                      <div class="card__meta">
+                        <h3 class="card__title">Исполнение танзанского танца в кругу бабуинов</h3>
+
+                        <div class="card__row">
+                          <div class="card__desc">доисторический мюзикл</div>
+                          <div class="stats" aria-label="Статистика">
+                            <div class="stat" title="Просмотры">
+                              <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                              <span>10k</span>
+                            </div>
+                            <div class="stat" title="Лайки">
+                              <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                              <span>4k</span>
+                            </div>
+                            <span class="rating" title="Возрастной рейтинг">18+</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tagbar" aria-label="Теги">
+                        <div class="tag">Вы – главный герой</div>
+                        <div class="tag">Уникальный опыт</div>
+                        <div class="tag">Без рекламы</div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="slide" data-slide="2">
+                    <div class="card">
+                      <div class="card__media">
+                        <img src="./cover-potato.png" alt="" />
+                      </div>
+
+                      <div class="card__meta">
+                        <h3 class="card__title">Капание картофеля в глухой деревне Тайги</h3>
+
+                        <div class="card__row">
+                          <div class="card__desc">советская драма</div>
+                          <div class="stats" aria-label="Статистика">
+                            <div class="stat" title="Просмотры">
+                              <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                              <span>10k</span>
+                            </div>
+                            <div class="stat" title="Лайки">
+                              <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                              <span>4k</span>
+                            </div>
+                            <span class="rating" title="Возрастной рейтинг">16+</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tagbar" aria-label="Теги">
+                        <div class="tag">Вы – главный герой</div>
+                        <div class="tag">Уникальный опыт</div>
+                        <div class="tag">Без рекламы</div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <div class="carousel__nav" aria-hidden="false">
+                <button class="carousel__btn" type="button" data-carousel-prev aria-label="Назад">
+                  <img src="./icon-left.png" alt="" aria-hidden="true" />
+                </button>
+                <button class="carousel__btn" type="button" data-carousel-next aria-label="Вперёд">
+                  <img src="./icon-right.png" alt="" aria-hidden="true" />
+                </button>
+              </div>
+
+              <div class="dots" aria-label="Позиция">
+                <div class="dot is-active" data-dot="0"></div>
+                <div class="dot" data-dot="1"></div>
+                <div class="dot" data-dot="2"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="users-section" aria-label="Выбор пользователей этой ночью">
+            <div class="users-section__head">
+              <h2 class="users-section__title">Выбор пользователей этой ночью</h2>
+              <button class="users-more" type="button" aria-label="Показать ещё">
+                <img src="./icon-arrow-forward.png" alt="" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div class="users-grid">
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-monowheel.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Побег из трудового лагеря на моноколесе</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">экстримальный боевик</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>10k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>4k</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-wedding.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Армянская свадьба в горном селе</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">старая комедия</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>8k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>999</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-coconut.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Стрельба из кокосовой пушки</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">жаркий вестерн</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>140k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>88k</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-blackhole.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Бесконечное засасывание в чёрную дыру</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">болезненный хоррор</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>2k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>899</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-birds.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Межсезонный птичий перелёт ЮАР–Белорусь POV-формата</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">авторский сеанс</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>66k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>59k</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="user-card">
+                <div class="user-card__media">
+                  <img src="./users-zhirinovsky.png" alt="" />
+                </div>
+                <div class="user-card__body">
+                  <h3 class="user-card__title">Жириновский small-talk</h3>
+                  <div class="user-card__row">
+                    <p class="user-card__genre">познавательный артхаус</p>
+                    <div class="user-card__stats" aria-label="Статистика">
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>899k</span>
+                      </div>
+                      <div class="stat">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>88k</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="idols-section" aria-labelledby="idols-heading">
+            <div class="idols-block">
+              <div class="idols-head">
+                <h2 id="idols-heading" class="idols-head__title">Новинка: сон с кумиром</h2>
+                <button class="users-more" type="button" aria-label="Показать ещё кумиров">
+                  <img src="./icon-arrow-forward.png" alt="" aria-hidden="true" />
+                </button>
+              </div>
+              <div class="idols-row">
+                <article class="idol-card">
+                  <div class="idol-card__media">
+                    <img src="./idol-freud.png" alt="Зигмунд Фрейд" />
+                  </div>
+                  <div class="idol-card__foot">
+                    <div class="idol-card__text">
+                      <h3 class="idol-card__name">Зигмунд Фрейд</h3>
+                      <p class="idol-card__role">американский психолог</p>
+                    </div>
+                    <div class="idol-card__likes" aria-label="Лайки">
+                      <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                      <span>88</span>
+                    </div>
+                  </div>
+                </article>
+                <article class="idol-card">
+                  <div class="idol-card__media">
+                    <img src="./idol-zuckerberg.png" alt="Марк Цукерберг" />
+                  </div>
+                  <div class="idol-card__foot">
+                    <div class="idol-card__text">
+                      <h3 class="idol-card__name">Марк Цукерберг</h3>
+                      <p class="idol-card__role">создатель Meta</p>
+                    </div>
+                    <div class="idol-card__likes" aria-label="Лайки">
+                      <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                      <span>23k</span>
+                    </div>
+                  </div>
+                </article>
+                <article class="idol-card idol-card--bright">
+                  <div class="idol-card__media">
+                    <img src="./legend-thumb-blonde.png" alt="Настя Ивлеева" />
+                  </div>
+                  <div class="idol-card__foot">
+                    <div class="idol-card__text">
+                      <h3 class="idol-card__name">Настя Ивлеева</h3>
+                      <p class="idol-card__role">ретро-блогер</p>
+                    </div>
+                    <div class="idol-card__likes" aria-label="Лайки">
+                      <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                      <span>999</span>
+                    </div>
+                  </div>
+                </article>
+                <article class="idol-card">
+                  <div class="idol-card__media">
+                    <img src="./idol-madam-n-red.png" alt="Мадам N" />
+                  </div>
+                  <div class="idol-card__foot">
+                    <div class="idol-card__text">
+                      <h3 class="idol-card__name">Мадам N</h3>
+                      <p class="idol-card__role">легендарный мем предков</p>
+                    </div>
+                    <div class="idol-card__likes" aria-label="Лайки">
+                      <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                      <span>45k</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="legends-block">
+              <h2 class="legends-block__title" id="legends-heading">Союз легенд</h2>
+              <p class="legends-block__lede">
+                Объедините любимых героев и проведите сон вместе — создайте уникальную историю, где два кумира
+                встретятся в одном невероятном приключении
+              </p>
+              <div class="legends-visual" aria-labelledby="legends-heading">
+                <div class="legends-hero">
+                  <img src="./legends-hero-duo.png" alt="Снуп Догг и Филипп Киркоров" />
+                </div>
+                <div class="legends-cards">
+                  <article class="legend-card">
+                    <div class="legend-card__media">
+                      <img src="./legend-snoop.png" alt="Снуп дог" />
+                    </div>
+                    <div class="idol-card__foot">
+                      <div class="idol-card__text">
+                        <h3 class="idol-card__name">Снуп дог</h3>
+                        <p class="idol-card__role">ретро-репер 00-х</p>
+                      </div>
+                      <div class="idol-card__likes" aria-label="Лайки">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>3k</span>
+                      </div>
+                    </div>
+                  </article>
+                  <div class="legend-quad">
+                    <div class="legend-thumb">
+                      <img src="./idol-gagarin.png" alt="Юрий Гагарин" />
+                    </div>
+                    <div class="legend-thumb">
+                      <img src="./idol-woman-darkhair.png" alt="" />
+                    </div>
+                    <div class="legend-thumb">
+                      <img src="./legend-thumb-sadhguru.png" alt="" />
+                    </div>
+                    <div class="legend-thumb">
+                      <img src="./legend-thumb-man.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="subscription-section" aria-labelledby="subscription-heading">
+            <div class="subscription-head">
+              <div class="subscription-brandline">
+                <h2 id="subscription-heading" class="subscription-brandline__text">Только в подписке</h2>
+                <img
+                  class="subscription-brandline__logo"
+                  src="./subscription-sonik-ultra.png"
+                  alt="Sonik 3000 ultra"
+                />
+              </div>
+              <button class="subscription-button" type="button">Купить подписку</button>
+            </div>
+
+            <p class="subscription-lede">
+              Зачем просто спать, если можно проживать сны, которые вы выбираете самостоятельно? С Sonik 3000 Ultra
+              вы получаете персонализированные сеансы и сериальный формат без рекламы. Начните с 7 бесплатных ночей и
+              открой доступ к новой реальности
+            </p>
+
+            <article class="subscription-card">
+              <img
+                class="subscription-card__media"
+                src="./subscription-reef.png"
+                alt="Плавание в барьерном рифе"
+              />
+
+              <div>
+                <h3 class="subscription-card__title">Плавание в барьерном рифе. 1 серия</h3>
+                <div class="subscription-card__row">
+                  <p class="subscription-card__genre">экстримальный триллер от лица черепахи с элементами драмы</p>
+                  <div class="stats" aria-label="Статистика">
+                    <div class="stat" title="Просмотры">
+                      <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                      <span>10k</span>
+                    </div>
+                    <div class="stat" title="Лайки">
+                      <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                      <span>4k</span>
+                    </div>
+                    <span class="rating" title="Возрастной рейтинг">18+</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="subscription-tags" aria-label="Теги формата">
+                <div class="tag">Вы - главный герой</div>
+                <div class="tag">12 серий-сеансов</div>
+                <div class="tag">Без рекламы</div>
+              </div>
+            </article>
+          </section>
+
+          <section class="beta-section" aria-labelledby="beta-heading">
+            <div class="beta-intro">
+              <div class="beta-head">
+                <h2 id="beta-heading" class="beta-head__title">Sonik beta</h2>
+                <button class="beta-button" type="button">Попробовать</button>
+              </div>
+              <p class="beta-lede">
+                Сервис находится в стадии тестирования, поэтому во время сеанса возможны небольшие отклонения от
+                выбранного сюжета, визуальные помехи или неожиданные детали. Мы постоянно улучшаем качество снов.
+                Спасибо, что тестируете вместе с нами
+              </p>
+            </div>
+
+            <div class="beta-grid">
+              <article class="beta-card">
+                <img
+                  class="beta-card__media"
+                  src="./beta-venice-pizza.png"
+                  alt="Поиск золотой пиццы в затопленной Венеции"
+                />
+                <div>
+                  <h3 class="beta-card__title">Поиск золотой пиццы в затопленной Венеции</h3>
+                  <div class="beta-card__row">
+                    <p class="beta-card__risk">риск отравления</p>
+                    <div class="stats beta-card__stats" aria-label="Статистика">
+                      <div class="stat" title="Просмотры">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>10k</span>
+                      </div>
+                      <div class="stat" title="Лайки">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>4k</span>
+                      </div>
+                      <span class="rating" title="Возрастной рейтинг">12+</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="beta-card">
+                <img
+                  class="beta-card__media"
+                  src="./beta-underwater-mortgage.png"
+                  alt="Подводное оформление ипотеки на квартиру в Куюках"
+                />
+                <div>
+                  <h3 class="beta-card__title">Подводное оформление ипотеки на квартиру в Куюках</h3>
+                  <div class="beta-card__row">
+                    <p class="beta-card__risk">будет больно</p>
+                    <div class="stats beta-card__stats" aria-label="Статистика">
+                      <div class="stat" title="Просмотры">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>8k</span>
+                      </div>
+                      <div class="stat" title="Лайки">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>999</span>
+                      </div>
+                      <span class="rating" title="Возрастной рейтинг">16+</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="beta-card">
+                <img class="beta-card__media" src="./beta-broom-flight.png" alt="Полёт на метле" />
+                <div>
+                  <h3 class="beta-card__title">Полёт на метле</h3>
+                  <div class="beta-card__row">
+                    <p class="beta-card__risk">сильная турбулентность</p>
+                    <div class="stats beta-card__stats" aria-label="Статистика">
+                      <div class="stat" title="Просмотры">
+                        <img class="stat__icon" src="./icon-eye.png" alt="" aria-hidden="true" />
+                        <span>140k</span>
+                      </div>
+                      <div class="stat" title="Лайки">
+                        <img class="stat__icon" src="./icon-heart.png" alt="" aria-hidden="true" />
+                        <span>88k</span>
+                      </div>
+                      <span class="rating" title="Возрастной рейтинг">12+</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="subpay-section" aria-labelledby="subpay-heading">
+            <div
+              class="subpay"
+              role="group"
+              aria-labelledby="subpay-heading"
+            >
+              <div class="subpay__head">
+                <div class="subpay__title-row">
+                  <h2 id="subpay-heading" class="subpay__title">Оформить подписку</h2>
+                  <img
+                    class="subpay__badge"
+                    src="./subscription-sonik-ultra.png"
+                    alt="Sonik 3000 ultra"
+                    width="185"
+                    height="22"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+              <div class="subpay__stack">
+                <div class="subpay__fields">
+                  <div class="subpay__field">
+                    <p class="subpay__label">Номер карты</p>
+                    <div class="subpay__glass subpay__glass--wide" aria-hidden="true">
+                      <p class="subpay__glass-text">2200 4560 3456 1212</p>
+                    </div>
+                  </div>
+                  <div class="subpay__row">
+                    <div class="subpay__col">
+                      <p class="subpay__label">Год</p>
+                      <div class="subpay__glass subpay__glass--grow" aria-hidden="true">
+                        <p class="subpay__glass-text">06/23</p>
+                      </div>
+                    </div>
+                    <div class="subpay__col">
+                      <p class="subpay__label">CVC</p>
+                      <div class="subpay__glass subpay__glass--grow" aria-hidden="true">
+                        <p class="subpay__glass-text">512</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="subpay__submit">Оформить</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <dialog class="sonik-card-dialog" id="sonik-card-dialog" aria-labelledby="sonik-card-dialog-label">
+      <div class="sonik-card-dialog__panel">
+        <button type="button" class="sonik-card-dialog__close" data-sonik-modal-close aria-label="Закрыть">
+          ×
+        </button>
+        <div class="sonik-card-dialog__body" data-sonik-modal-body></div>
+      </div>
+    </dialog>
+    <span id="sonik-card-dialog-label" class="visually-hidden">Карточка сеанса</span>
+
+    <dialog
+      class="sonik-card-dialog"
+      id="sonik-register-dialog"
+      aria-labelledby="sonik-register-dialog-title"
+    >
+      <div class="sonik-card-dialog__panel">
+        <div class="sonik-reg">
+          <div class="sonik-reg__head">
+            <h2 id="sonik-register-dialog-title" class="sonik-reg__title">Регистрация</h2>
+            <button type="button" class="sonik-reg__close" data-sonik-register-close aria-label="Закрыть"></button>
+          </div>
+          <div class="sonik-reg__block">
+            <p class="sonik-reg__error" id="sonikModalRegisterError" hidden></p>
+            <form id="sonikModalRegisterForm" class="sonik-reg__form" autocomplete="on" novalidate>
+              <div class="sonik-reg__fields">
+                <div class="sonik-reg__field">
+                  <p class="sonik-reg__label">Имя или псевдоним</p>
+                  <div class="sonik-reg__input-wrap">
+                    <input
+                      id="sonik-modal-reg-nickname"
+                      name="nickname"
+                      type="text"
+                      placeholder="abonent123"
+                      autocomplete="username"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="sonik-reg__field">
+                  <p class="sonik-reg__label">E-mail</p>
+                  <div class="sonik-reg__input-wrap">
+                    <input
+                      id="sonik-modal-reg-email"
+                      name="email"
+                      type="email"
+                      placeholder="sonya@mail.ru"
+                      autocomplete="email"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="sonik-reg__field">
+                  <p class="sonik-reg__label">Пароль</p>
+                  <div class="sonik-reg__input-wrap">
+                    <input
+                      id="sonik-modal-reg-password"
+                      name="password"
+                      type="password"
+                      placeholder="придумайте пароль"
+                      autocomplete="new-password"
+                      required
+                      minlength="4"
+                    />
+                  </div>
+                </div>
+              </div>
+              <button class="sonik-reg__submit" type="submit">Зарегистрироваться</button>
+            </form>
+            <p class="sonik-reg__footer">
+              <span>Есть аккаунт? </span>
+              <a id="sonikModalRegisterToSignin" href="./signin.html?return=index.html">Войти</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      (() => {
+        const REGISTER_KEY = "sonik_registered";
+        const EMAIL_KEY = "sonik_user_email";
+        const NICK_KEY = "sonik_user_nickname";
+        const PASS_KEY = "sonik_user_password";
+
+        function isRegistered() {
+          try {
+            return localStorage.getItem(REGISTER_KEY) === "1";
+          } catch {
+            return false;
+          }
+        }
+
+        const profileLink = document.querySelector("[data-sonik-profile]");
+
+        function syncProfileLink() {
+          if (!profileLink) return;
+          const page = location.pathname.split("/").pop() || "index.html";
+          if (isRegistered()) {
+            profileLink.href = "./cabinet.html";
+            profileLink.setAttribute("aria-label", "Личный кабинет");
+          } else {
+            profileLink.href = `./register.html?return=${encodeURIComponent(page)}`;
+            profileLink.setAttribute("aria-label", "Регистрация");
+          }
+        }
+
+        syncProfileLink();
+
+        const dialog = document.getElementById("sonik-card-dialog");
+        const modalBody = dialog?.querySelector("[data-sonik-modal-body]");
+        const closeBtn = dialog?.querySelector("[data-sonik-modal-close]");
+
+        const registerDialog = document.getElementById("sonik-register-dialog");
+        const registerCloseBtn = registerDialog?.querySelector("[data-sonik-register-close]");
+        const modalRegForm = document.getElementById("sonikModalRegisterForm");
+        const modalRegErr = document.getElementById("sonikModalRegisterError");
+        const modalNickname = document.getElementById("sonik-modal-reg-nickname");
+        const modalEmail = document.getElementById("sonik-modal-reg-email");
+        const modalPassword = document.getElementById("sonik-modal-reg-password");
+
+        let pendingCardEl = null;
+
+        function openCardModal(cardEl) {
+          if (!dialog || !modalBody) return;
+          modalBody.innerHTML = "";
+          const wrap = document.createElement("div");
+          wrap.className = "sonik-card-dialog__clone-wrap";
+          wrap.appendChild(cardEl.cloneNode(true));
+          modalBody.appendChild(wrap);
+          if (isRegistered()) {
+            const row = document.createElement("div");
+            row.className = "sonik-card-dialog__session-row";
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "sonik-card-dialog__session-btn";
+            btn.textContent = "Начать сеанс";
+            btn.addEventListener("click", () => {
+              closeModal();
+            });
+            row.appendChild(btn);
+            modalBody.appendChild(row);
+          }
+          dialog.showModal();
+        }
+
+        function closeModal() {
+          dialog?.close();
+        }
+
+        closeBtn?.addEventListener("click", closeModal);
+
+        dialog?.addEventListener("click", (e) => {
+          if (e.target === dialog) closeModal();
+        });
+
+        dialog?.addEventListener("cancel", (e) => {
+          e.preventDefault();
+          closeModal();
+        });
+
+        function closeRegisterModal() {
+          registerDialog?.close();
+          pendingCardEl = null;
+        }
+
+        function openRegisterModal(cardEl) {
+          pendingCardEl = cardEl;
+          modalRegErr.hidden = true;
+          modalRegForm?.reset();
+          registerDialog?.showModal();
+          queueMicrotask(() => modalNickname?.focus());
+        }
+
+        registerCloseBtn?.addEventListener("click", closeRegisterModal);
+
+        registerDialog?.addEventListener("click", (e) => {
+          if (e.target === registerDialog) closeRegisterModal();
+        });
+
+        registerDialog?.addEventListener("cancel", (e) => {
+          e.preventDefault();
+          closeRegisterModal();
+        });
+
+        modalRegForm?.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (!modalRegErr || !modalNickname || !modalEmail || !modalPassword) return;
+          modalRegErr.hidden = true;
+          const nickname = modalNickname.value.trim();
+          const email = modalEmail.value.trim();
+          const password = modalPassword.value;
+
+          if (!nickname || !email || !password) {
+            modalRegErr.textContent = "Заполните имя, e-mail и пароль.";
+            modalRegErr.hidden = false;
+            return;
+          }
+
+          if (password.length < 4) {
+            modalRegErr.textContent = "Пароль не короче 4 символов.";
+            modalRegErr.hidden = false;
+            return;
+          }
+
+          try {
+            localStorage.setItem(REGISTER_KEY, "1");
+            localStorage.setItem(EMAIL_KEY, email);
+            localStorage.setItem(NICK_KEY, nickname);
+            localStorage.setItem(PASS_KEY, password);
+          } catch {
+            modalRegErr.textContent = "Не удалось сохранить данные в браузере.";
+            modalRegErr.hidden = false;
+            return;
+          }
+
+          syncProfileLink();
+          const cardToShow = pendingCardEl;
+          closeRegisterModal();
+          if (cardToShow && document.body.contains(cardToShow)) {
+            openCardModal(cardToShow);
+          }
+        });
+
+        const gatedSelector = ".user-card, .idol-card, .legend-card, .subscription-card, .beta-card";
+
+        function handleGatedCardActivate(card) {
+          if (isRegistered()) {
+            openCardModal(card);
+          } else {
+            openRegisterModal(card);
+          }
+        }
+
+        document.addEventListener(
+          "click",
+          (e) => {
+            const card = e.target.closest(gatedSelector);
+            if (!card || !document.body.contains(card)) return;
+            if (e.target.closest("a, button, input, select, textarea, label")) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            handleGatedCardActivate(card);
+          },
+          true
+        );
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key !== "Enter" && e.key !== " ") return;
+          const card = document.activeElement?.closest?.(gatedSelector);
+          if (!card) return;
+          e.preventDefault();
+          handleGatedCardActivate(card);
+        });
+
+        document.querySelectorAll(gatedSelector).forEach((el) => {
+          if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "0");
+          el.setAttribute("role", "button");
+        });
+      })();
+    </script>
+
+    <style>
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+
+    <script>
+      (() => {
+        const root = document.querySelector('[data-carousel="new"]');
+        if (!root) return;
+
+        const viewport = root.querySelector("[data-carousel-viewport]");
+        const track = root.querySelector("[data-carousel-track]");
+        const btnPrev = root.querySelector("[data-carousel-prev]");
+        const btnNext = root.querySelector("[data-carousel-next]");
+        const dots = Array.from(root.querySelectorAll("[data-dot]"));
+
+        const originalSlides = Array.from(track.querySelectorAll(".slide"));
+        const originalCount = originalSlides.length; // 3
+        if (originalCount === 0) return;
+
+        // clones for infinite loop
+        const headClone = originalSlides[0].cloneNode(true);
+        const tailClone = originalSlides[originalCount - 1].cloneNode(true);
+        headClone.setAttribute("data-clone", "head");
+        tailClone.setAttribute("data-clone", "tail");
+        track.insertBefore(tailClone, originalSlides[0]);
+        track.appendChild(headClone);
+
+        let index = 1; // start at first real slide (after tail clone)
+        let isAnimating = false;
+
+        const getSlideWidth = () => viewport.getBoundingClientRect().width;
+
+        const setDots = (realIndex) => {
+          const i = ((realIndex % originalCount) + originalCount) % originalCount;
+          dots.forEach((d) => d.classList.toggle("is-active", Number(d.dataset.dot) === i));
+        };
+
+        const snapToIndex = (i) => {
+          const w = getSlideWidth();
+          track.style.transition = "none";
+          track.style.transform = `translate3d(${-i * (w + 28)}px, 0, 0)`;
+          // force reflow
+          track.getBoundingClientRect();
+        };
+
+        const animateToIndex = (i) => {
+          const w = getSlideWidth();
+          track.style.transition = "transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1)";
+          track.style.transform = `translate3d(${-i * (w + 28)}px, 0, 0)`;
+        };
+
+        // initial
+        snapToIndex(index);
+        setDots(0);
+
+        const go = (dir) => {
+          if (isAnimating) return;
+          isAnimating = true;
+          index += dir;
+          animateToIndex(index);
+          setDots(index - 1); // real slide index approx
+        };
+
+        btnPrev?.addEventListener("click", () => go(-1));
+        btnNext?.addEventListener("click", () => go(1));
+
+        track.addEventListener("transitionend", () => {
+          const slidesNow = track.querySelectorAll(".slide");
+          if (index === 0) {
+            // moved onto tail clone -> jump to last real
+            index = originalCount;
+            snapToIndex(index);
+          } else if (index === slidesNow.length - 1) {
+            // moved onto head clone -> jump to first real
+            index = 1;
+            snapToIndex(index);
+          }
+          track.style.transition = "";
+          isAnimating = false;
+          setDots(index - 1);
+        });
+
+        window.addEventListener("resize", () => snapToIndex(index));
+      })();
+    </script>
+  </body>
+</html>
+

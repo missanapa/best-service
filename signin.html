@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Sonik — авторизация</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Red+Rose:wght@400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --container-max: 1280px;
+        --container-pad: 24px;
+        --text: rgba(255, 255, 255, 0.92);
+        --accent: #0aa7f8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        font-weight: 600;
+        background: linear-gradient(180deg, #bfdbfe 0%, #7dd3fc 35%, #38bdf8 70%, #0284c7 100%);
+        background-attachment: fixed;
+      }
+
+      .aero-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .aero-bg__sky {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: linear-gradient(
+          185deg,
+          #e0f2fe 0%,
+          #93c5fd 22%,
+          #60a5fa 48%,
+          #38bdf8 78%,
+          #0369a1 100%
+        );
+      }
+
+      .aero-bg__sky::before {
+        content: "";
+        position: absolute;
+        inset: -8% -5%;
+        background:
+          radial-gradient(ellipse 120% 60% at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 52%),
+          radial-gradient(ellipse 52% 28% at 8% 22%, rgba(255, 255, 255, 0.45) 0%, transparent 58%),
+          radial-gradient(ellipse 40% 22% at 28% 18%, rgba(255, 255, 255, 0.38) 0%, transparent 56%),
+          radial-gradient(ellipse 48% 26% at 52% 20%, rgba(255, 255, 255, 0.42) 0%, transparent 58%),
+          radial-gradient(ellipse 44% 24% at 76% 16%, rgba(255, 255, 255, 0.4) 0%, transparent 56%),
+          radial-gradient(ellipse 50% 28% at 94% 24%, rgba(255, 255, 255, 0.36) 0%, transparent 58%),
+          radial-gradient(ellipse 72% 34% at 18% 52%, rgba(255, 255, 255, 0.22) 0%, transparent 64%),
+          radial-gradient(ellipse 68% 32% at 82% 56%, rgba(255, 255, 255, 0.2) 0%, transparent 62%),
+          radial-gradient(ellipse 95% 38% at 48% 82%, rgba(255, 255, 255, 0.14) 0%, transparent 68%);
+        animation: aero-sky-cloud-drift 85s ease-in-out infinite alternate;
+        will-change: transform;
+      }
+
+      .aero-bg__sky::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 28% 16% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
+          radial-gradient(circle at 50% -5%, rgba(255, 255, 255, 0.28) 0%, transparent 38%);
+        opacity: 0.85;
+        animation: aero-sky-cloud-drift2 110s ease-in-out infinite alternate-reverse;
+        will-change: transform;
+      }
+
+      @keyframes aero-sky-cloud-drift {
+        from {
+          transform: translate3d(-2.5%, 0, 0) scale(1.03);
+        }
+        to {
+          transform: translate3d(2.5%, 0, 0) scale(1.03);
+        }
+      }
+
+      @keyframes aero-sky-cloud-drift2 {
+        from {
+          transform: translate3d(1.5%, -0.8%, 0);
+        }
+        to {
+          transform: translate3d(-1.5%, 0.6%, 0);
+        }
+      }
+
+      .aero-bg__fx {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .aero-bg__fx::before {
+        content: "";
+        position: absolute;
+        inset: -25%;
+        background:
+          radial-gradient(ellipse 45% 38% at 18% 28%, rgba(255, 255, 255, 0.22) 0%, transparent 52%),
+          radial-gradient(ellipse 38% 32% at 88% 22%, rgba(186, 230, 253, 0.4) 0%, transparent 55%),
+          radial-gradient(ellipse 55% 45% at 50% 95%, rgba(14, 165, 233, 0.18) 0%, transparent 48%),
+          radial-gradient(ellipse 30% 28% at 72% 65%, rgba(167, 139, 250, 0.12) 0%, transparent 50%);
+        mix-blend-mode: soft-light;
+        animation: aero-fx-drift 48s ease-in-out infinite alternate;
+        will-change: transform;
+      }
+
+      .aero-bg__fx::after {
+        content: "";
+        position: absolute;
+        inset: -50%;
+        background: linear-gradient(
+          118deg,
+          transparent 42%,
+          rgba(255, 255, 255, 0.12) 50%,
+          transparent 58%
+        );
+        background-size: 240% 240%;
+        animation: aero-fx-shimmer 14s ease-in-out infinite;
+        opacity: 0.55;
+        mix-blend-mode: overlay;
+        will-change: background-position;
+      }
+
+      @keyframes aero-fx-drift {
+        from {
+          transform: translate3d(-3%, -1.5%, 0) rotate(-1deg);
+        }
+        to {
+          transform: translate3d(3%, 1.5%, 0) rotate(1deg);
+        }
+      }
+
+      @keyframes aero-fx-shimmer {
+        0%,
+        100% {
+          background-position: 0% 40%;
+        }
+        50% {
+          background-position: 100% 60%;
+        }
+      }
+
+      .aero-bg__bubbles {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .aero-bubble {
+        position: absolute;
+        left: var(--x, 50%);
+        bottom: var(--b, -12%);
+        width: calc(var(--w, 40px) * 4);
+        height: calc(var(--w, 40px) * 4);
+        border-radius: 50%;
+        opacity: 0;
+        --op: 0.78;
+        background:
+          radial-gradient(
+            circle at 32% 28%,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(255, 255, 255, 0.35) 18%,
+            rgba(125, 211, 252, 0.25) 42%,
+            rgba(14, 165, 233, 0.12) 100%
+          );
+        box-shadow:
+          inset -24px -40px 72px rgba(255, 255, 255, 0.55),
+          inset 20px 32px 64px rgba(3, 105, 161, 0.22),
+          0 24px 112px rgba(14, 165, 233, 0.35),
+          0 0 4px rgba(255, 255, 255, 0.85);
+        animation: aero-bubble-rise var(--dur, 24s) linear infinite;
+        animation-delay: var(--delay, 0s);
+        will-change: transform, opacity;
+      }
+
+      @keyframes aero-bubble-rise {
+        0% {
+          transform: translate3d(0, 0, 0) scale(0.75);
+          opacity: 0;
+        }
+        6% {
+          opacity: var(--op);
+        }
+        92% {
+          opacity: calc(var(--op) * 0.85);
+        }
+        100% {
+          transform: translate3d(var(--dx, 0px), calc(-100vh - 520px), 0) scale(1.08);
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .aero-bg__bubbles {
+          display: none;
+        }
+
+        .aero-bg__sky::before,
+        .aero-bg__sky::after,
+        .aero-bg__fx::before,
+        .aero-bg__fx::after {
+          animation: none;
+        }
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        min-height: 100%;
+        padding: 56px 0 96px;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: min(var(--container-max), calc(100% - var(--container-pad) * 2));
+        margin: 0 auto;
+      }
+
+      .reg-header {
+        width: 100%;
+        max-width: 1280px;
+        min-height: 81px;
+        padding: 16px 24px;
+        margin: 0 auto;
+        border-radius: 40px;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 32px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(101, 177, 225, 0.6) 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px white inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          9px 4px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .reg-header__brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .reg-header__mark {
+        width: 48px;
+        height: 44px;
+        border-radius: 8px;
+        object-fit: contain;
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .reg-header__wordmark {
+        width: 175px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-family: "Red Rose", serif;
+        font-size: 30px;
+        font-weight: 400;
+        color: white;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+        line-height: 1.05;
+      }
+
+      .reg-main {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .reg-glass {
+        padding: 24px;
+        border-radius: 40px;
+        max-width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        background: linear-gradient(
+          179deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(36, 138, 204, 0.56) 44%,
+          rgba(82, 175, 234, 0.58) 75%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          0px 0px 0.25px 1.25px rgba(255, 255, 255, 0.8) inset,
+          5px 6px 4px rgba(255, 255, 255, 0.25) inset,
+          6px 8px 4px rgba(12, 56, 84, 0.14);
+      }
+
+      .reg-glass__inner {
+        width: min(490px, 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .reg-title {
+        margin: 0;
+        color: white;
+        font-size: 28px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .reg-form-block {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .reg-form-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .reg-field-group {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .reg-label {
+        margin: 0;
+        color: white;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .reg-input-wrap {
+        align-self: stretch;
+        height: 49px;
+        padding: 16px 8px 16px 16px;
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(101, 177, 225, 0.2) 83%,
+          rgba(255, 255, 255, 0.11) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px white solid;
+        outline-offset: -1px;
+      }
+
+      .reg-input-wrap input {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        border: 0;
+        background: transparent;
+        color: white;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        outline: none;
+      }
+
+      .reg-input-wrap input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .reg-stack {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .reg-submit {
+        align-self: stretch;
+        height: 53px;
+        padding: 16px 8px 16px 16px;
+        border-radius: 40px;
+        border: 0;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          #65b1e1 83%,
+          rgba(255, 255, 255, 0.47) 100%
+        );
+        box-shadow:
+          3px 5px 2px -4.75px #0aa7f8 inset,
+          0px 0px 0.25px 1.25px #0aa7f8 inset,
+          0px 4px 4px rgba(12, 56, 84, 0.25);
+        outline: 1px white solid;
+        outline-offset: -1px;
+        color: white;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .reg-footer-line {
+        margin: 0;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        color: white;
+        text-shadow: 0px 4px 4px rgba(12, 56, 84, 0.4);
+      }
+
+      .reg-footer-line a {
+        color: white;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .reg-back {
+        display: inline-block;
+        margin-top: 24px;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        color: #fff;
+        text-shadow: 0px 2px 4px rgba(12, 56, 84, 0.45);
+      }
+
+      .reg-error {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 600;
+        color: #fecaca;
+        text-shadow: 0 1px 2px rgba(12, 56, 84, 0.4);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 24px 0 56px;
+        }
+        .reg-header__wordmark {
+          width: auto;
+          font-size: 26px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="aero-bg" aria-hidden="true">
+      <div class="aero-bg__sky"></div>
+      <div class="aero-bg__fx"></div>
+      <ul class="aero-bg__bubbles">
+        <li class="aero-bubble" style="--x: 8%; --w: 52px; --dur: 26s; --delay: -3s; --dx: 35px; --b: -8%"></li>
+        <li class="aero-bubble" style="--x: 18%; --w: 28px; --dur: 19s; --delay: -12s; --dx: -22px; --op: 0.65"></li>
+        <li class="aero-bubble" style="--x: 26%; --w: 72px; --dur: 32s; --delay: -1s; --dx: 48px; --b: -15%"></li>
+        <li class="aero-bubble" style="--x: 38%; --w: 36px; --dur: 21s; --delay: -8s; --dx: -40px"></li>
+        <li class="aero-bubble" style="--x: 44%; --w: 96px; --dur: 38s; --delay: -18s; --dx: 18px; --op: 0.55"></li>
+        <li class="aero-bubble" style="--x: 55%; --w: 44px; --dur: 23s; --delay: -5s; --dx: 55px"></li>
+        <li class="aero-bubble" style="--x: 62%; --w: 22px; --dur: 16s; --delay: -14s; --dx: -15px; --op: 0.6"></li>
+        <li class="aero-bubble" style="--x: 71%; --w: 64px; --dur: 29s; --delay: -22s; --dx: -52px; --b: -10%"></li>
+        <li class="aero-bubble" style="--x: 78%; --w: 34px; --dur: 20s; --delay: -7s; --dx: 28px"></li>
+        <li class="aero-bubble" style="--x: 88%; --w: 58px; --dur: 27s; --delay: -11s; --dx: -30px"></li>
+        <li class="aero-bubble" style="--x: 95%; --w: 40px; --dur: 24s; --delay: -16s; --dx: 42px; --op: 0.68"></li>
+        <li class="aero-bubble" style="--x: 12%; --w: 18px; --dur: 14s; --delay: -9s; --dx: 20px; --op: 0.5"></li>
+        <li class="aero-bubble" style="--x: 33%; --w: 24px; --dur: 17s; --delay: -20s; --dx: -25px; --op: 0.52"></li>
+        <li class="aero-bubble" style="--x: 48%; --w: 80px; --dur: 35s; --delay: -4s; --dx: 62px; --op: 0.48"></li>
+        <li class="aero-bubble" style="--x: 66%; --w: 30px; --dur: 18s; --delay: -13s; --dx: 12px"></li>
+        <li class="aero-bubble" style="--x: 82%; --w: 46px; --dur: 25s; --delay: -25s; --dx: -38px"></li>
+        <li class="aero-bubble" style="--x: 3%; --w: 56px; --dur: 31s; --delay: -6s; --dx: 45px; --b: -18%"></li>
+        <li class="aero-bubble" style="--x: 92%; --w: 32px; --dur: 22s; --delay: -2s; --dx: -48px"></li>
+        <li class="aero-bubble" style="--x: 22%; --w: 14px; --dur: 12s; --delay: -17s; --dx: 8px; --op: 0.45"></li>
+        <li class="aero-bubble" style="--x: 58%; --w: 20px; --dur: 15s; --delay: -21s; --dx: -10px; --op: 0.48"></li>
+      </ul>
+    </div>
+
+    <main class="page">
+      <div class="container">
+        <header class="reg-header">
+          <a class="reg-header__brand" href="./index.html" aria-label="Sonik — главная">
+            <img class="reg-header__mark" src="./logo-z.png" alt="" width="48" height="44" />
+            <span class="reg-header__wordmark">Sonik 3000</span>
+          </a>
+        </header>
+
+        <div class="reg-main">
+          <div class="reg-glass">
+            <div class="reg-glass__inner">
+              <h1 class="reg-title">Авторизация</h1>
+
+              <div class="reg-form-block">
+                <p class="reg-error" id="signinError" hidden></p>
+                <form id="signinForm" class="reg-stack" autocomplete="on" novalidate>
+                  <div class="reg-form-fields">
+                    <div class="reg-field-group">
+                      <p class="reg-label">E-mail</p>
+                      <div class="reg-input-wrap">
+                        <input
+                          id="signin-email"
+                          name="email"
+                          type="email"
+                          placeholder="sonya@mail.ru"
+                          autocomplete="email"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="reg-field-group">
+                      <p class="reg-label">Пароль</p>
+                      <div class="reg-input-wrap">
+                        <input
+                          id="signin-password"
+                          name="password"
+                          type="password"
+                          placeholder="••••••••"
+                          autocomplete="current-password"
+                          minlength="4"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="reg-submit" type="submit">Войти</button>
+                </form>
+
+                <p class="reg-footer-line">
+                  Нет аккаунта?
+                  <a id="signinToRegister" href="./register.html?return=index.html">Регистрация</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <a class="reg-back" href="./index.html">← На главную Sonik</a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const REGISTER_KEY = "sonik_registered";
+        const EMAIL_KEY = "sonik_user_email";
+        const PASS_KEY = "sonik_user_password";
+
+        function safeReturn(raw) {
+          if (!raw || typeof raw !== "string") return "index.html";
+          const t = raw.trim();
+          if (/^[a-z0-9._-]+\.html$/i.test(t) && !t.includes("..")) return t;
+          return "index.html";
+        }
+
+        const params = new URLSearchParams(location.search);
+        const returnPage = safeReturn(params.get("return"));
+
+        const regLink = document.getElementById("signinToRegister");
+        if (regLink) regLink.href = `./register.html?return=${encodeURIComponent(returnPage)}`;
+
+        const form = document.getElementById("signinForm");
+        const errEl = document.getElementById("signinError");
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          errEl.hidden = true;
+          const email = document.getElementById("signin-email").value.trim();
+          const password = document.getElementById("signin-password").value;
+
+          let storedEmail = "";
+          let storedPassword = "";
+          try {
+            storedEmail = localStorage.getItem(EMAIL_KEY) || "";
+            storedPassword = localStorage.getItem(PASS_KEY) || "";
+          } catch {
+            errEl.textContent = "Не удалось прочитать данные браузера.";
+            errEl.hidden = false;
+            return;
+          }
+
+          if (!storedEmail) {
+            errEl.textContent = "Аккаунт не найден. Сначала зарегистрируйтесь.";
+            errEl.hidden = false;
+            return;
+          }
+
+          if (email.toLowerCase() !== storedEmail.toLowerCase()) {
+            errEl.textContent = "Неверный e-mail или пароль.";
+            errEl.hidden = false;
+            return;
+          }
+
+          if (password.length < 4) {
+            errEl.textContent = "Введите пароль (не короче 4 символов).";
+            errEl.hidden = false;
+            return;
+          }
+
+          if (storedPassword && password !== storedPassword) {
+            errEl.textContent = "Неверный e-mail или пароль.";
+            errEl.hidden = false;
+            return;
+          }
+
+          try {
+            localStorage.setItem(REGISTER_KEY, "1");
+          } catch {
+            errEl.textContent = "Не удалось сохранить сессию.";
+            errEl.hidden = false;
+            return;
+          }
+
+          location.href = `./${returnPage}`;
+        });
+      })();
+    </script>
+  </body>
+</html>
